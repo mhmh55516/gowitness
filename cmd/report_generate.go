@@ -6,7 +6,7 @@ import (
 	"html/template"
 	"os"
 )
-
+var reportFileName string
 const outputTemplate = `
 <!DOCTYPE html>
 <html>
@@ -114,8 +114,7 @@ var reportGenerateCmd = &cobra.Command{
 		if err != nil {
 			log.Fatal().Err(err).Msg("failed to read template")
 		}
-
-		f, err := os.Create("report.html")
+		f, err := os.Create(reportFileName)
 		if err != nil {
 			log.Fatal().Err(err).Msg("could not create a new file, report.html")
 		}
@@ -135,4 +134,5 @@ var reportGenerateCmd = &cobra.Command{
 func init() {
 	reportCmd.AddCommand(reportGenerateCmd)
 	reportGenerateCmd.Flags().BoolVarP(&options.PerceptionSort, "sort", "S", false, "sort by image perceptions")
+	reportGenerateCmd.Flags().StringVarP(&reportFileName, "name", "n", "report.html", "Destination report filename")
 }
